@@ -13,12 +13,6 @@ from tqdm import tqdm
 engine = create_engine("mysql://user:password@ip:3306/data?charset=utf8")
 
 repo = Dolt('hospital-price-transparency')
-#
-# # do these one at a time:
-
-
-# cpt_hcpcs_df.to_sql('cpt_hcpcs', con=engine, if_exists="append" )
-# print(engine.execute("SELECT * FROM cpt_hcpcs").fetchall())
 
 query = "SELECT code, short_description, long_description from cpt_hcpcs WHERE (short_description like '%%blood%%' and " \
         "short_description like '%%transfusion%%')         or (long_description like '%%blood%%' and             " \
@@ -39,11 +33,11 @@ def insert_with_progress(df, table_name):
             tqdm._instances.clear()
 
 
-# cpt_hcpcs_df = read_pandas(repo, "cpt_hcpcs")
-# insert_with_progress(cpt_hcpcs_df, "cpt_hcpcs")
+cpt_hcpcs_df = read_pandas(repo, "cpt_hcpcs")
+insert_with_progress(cpt_hcpcs_df, "cpt_hcpcs")
 
-# hospitals_df = read_pandas(repo, "hospitals")
-# insert_with_progress(hospitals_df, "hospitals")
+hospitals_df = read_pandas(repo, "hospitals")
+insert_with_progress(hospitals_df, "hospitals")
 
 prices_df = read_pandas(repo, "prices")
 insert_with_progress(prices_df, "prices")
