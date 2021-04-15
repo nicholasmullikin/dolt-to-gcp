@@ -27,7 +27,6 @@ def insert_with_progress(df, table_name):
         for i in range(10):
             pos = chunksize * i
             cdf = df.iloc[pos:pos+chunksize,:]
-        # for i, cdf in enumerate(chunker(df, chunksize)):
             cdf.to_sql(name=table_name, con=engine, if_exists="append", index=False)
             pbar.update(chunksize)
             tqdm._instances.clear()
